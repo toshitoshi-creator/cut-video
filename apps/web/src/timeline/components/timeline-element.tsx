@@ -580,9 +580,14 @@ function ElementInner({
 					<button
 						type="button"
 						tabIndex={-1}
-						className="absolute inset-0 size-full flex flex-col"
+						className="absolute inset-0 size-full flex flex-col touch-none"
 						onClick={(event) => onElementClick({ event, element })}
-						onMouseDown={(event) => onElementMouseDown({ event, element })}
+						onPointerDown={(event) => onElementMouseDown({ event, element })}
+						onMouseDown={(event) => {
+							// Drag starts on pointerdown; keep the follow-up mousedown away from
+							// track-level handlers. Right-click must still bubble to ContextMenu.
+							if (event.button !== 2) event.stopPropagation();
+						}}
 					>
 						<div
 							className={cn(
@@ -647,10 +652,12 @@ function ResizeHandle({
 		<button
 			type="button"
 			className={cn(
-				"absolute top-0 bottom-0 w-2",
-				isLeft ? "-left-1 cursor-w-resize" : "-right-1 cursor-e-resize",
+				"absolute top-0 bottom-0 w-2 touch-none pointer-coarse:w-4",
+				isLeft
+					? "-left-1 cursor-w-resize pointer-coarse:-left-2"
+					: "-right-1 cursor-e-resize pointer-coarse:-right-2",
 			)}
-			onMouseDown={(event) => onResizeStart({ event, element, track, side })}
+			onPointerDown={(event) => onResizeStart({ event, element, track, side })}
 			onClick={(event) => event.stopPropagation()}
 			aria-label={isLeft ? t("Left resize handle") : t("Right resize handle")}
 		></button>
@@ -713,9 +720,9 @@ function KeyframeIndicators({
 			<button
 				key={indicator.time}
 				type="button"
-				className="pointer-events-auto absolute top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab mr-0.5"
+				className="pointer-events-auto absolute top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab mr-0.5 touch-none"
 				style={{ left: visualOffsetPx }}
-				onMouseDown={(event) =>
+				onPointerDown={(event) =>
 					onKeyframeMouseDown({ event, keyframes: indicator.keyframes })
 				}
 				onClick={(event) =>
@@ -860,11 +867,12 @@ function ExpandedKeyframeLanes({
 									key={kf.id}
 									type="button"
 									className={cn(
-										"pointer-events-auto absolute top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab",
+										"pointer-events-auto absolute top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none",
 										isBoxSelecting && "pointer-events-none",
 									)}
 									style={{ left: visualOffset }}
-									onMouseDown={(event) => {
+									onMouseDown={(event) => event.stopPropagation()}
+									onPointerDown={(event) => {
 										event.stopPropagation();
 										onKeyframeMouseDown({
 											event,
@@ -1078,6 +1086,7 @@ function EffectsButton({
 		<button
 			type="button"
 			className="flex shrink-0 justify-center text-white cursor-pointer"
+			onPointerDown={(event) => event.stopPropagation()}
 			onMouseDown={(event) => event.stopPropagation()}
 			onClick={handleClick}
 		>

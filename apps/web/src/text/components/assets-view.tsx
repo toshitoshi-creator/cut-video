@@ -15,7 +15,13 @@ export function TextView() {
 		if (!activeScene) return;
 
 		const element = buildTextElement({
-			raw: DEFAULTS.text.element,
+			raw: {
+				...DEFAULTS.text.element,
+				params: {
+					...DEFAULTS.text.element.params,
+					content: t("Default text"),
+				},
+			},
 			startTime: currentTime,
 		});
 

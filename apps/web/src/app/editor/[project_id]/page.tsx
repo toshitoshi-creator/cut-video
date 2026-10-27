@@ -22,6 +22,7 @@ import { useEditor } from "@/editor/use-editor";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
+import { isAppleTouchDevice } from "@/utils/platform";
 import { ChangelogNotification } from "@/changelog/components/changelog-notification";
 import {
 	createPreviewOverlayControl,
@@ -43,7 +44,7 @@ export default function Editor() {
 	return (
 		<MobileGate>
 			<EditorProvider projectId={projectId}>
-				<div className="bg-background flex h-screen w-screen flex-col overflow-hidden">
+				<div className="bg-background flex h-dvh w-screen flex-col overflow-hidden touch-manipulation [-webkit-touch-callout:none]">
 					<DegradedRendererBanner />
 					<EditorHeader />
 					<div className="min-h-0 min-w-0 flex-1">
@@ -66,7 +67,13 @@ function DegradedRendererBanner() {
 
 	return (
 		<div className="bg-accent border-b h-9 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-			<span>{t("For the best experience, open OpenCut in Chrome.")}</span>
+			<span>
+				{isAppleTouchDevice()
+					? t(
+							"GPU rendering is unavailable. Updating to the latest iPadOS may improve preview performance.",
+						)
+					: t("For the best experience, open OpenCut in Chrome.")}
+			</span>
 			<Button
 				variant="text"
 				size="icon"

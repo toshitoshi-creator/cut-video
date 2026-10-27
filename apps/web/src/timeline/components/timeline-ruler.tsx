@@ -123,12 +123,12 @@ export function TimelineRuler({
 			<div
 				role="none"
 				ref={rulerRef}
-				className="relative cursor-default select-none"
+				className="relative cursor-default select-none touch-none"
 				style={{
 					height: TIMELINE_RULER_HEIGHT_PX,
 					width: `${dynamicTimelineWidth}px`,
 				}}
-				onMouseDown={handleRulerMouseDown}
+				onPointerDown={handleRulerMouseDown}
 			>
 				{timelineTicks}
 			</div>

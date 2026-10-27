@@ -215,13 +215,15 @@ export class PlayheadController {
 	// --- Private ---
 
 	private activate(): void {
-		window.addEventListener("mousemove", this.handleMouseMove);
-		window.addEventListener("mouseup", this.handleMouseUp);
+		window.addEventListener("pointermove", this.handleMouseMove);
+		window.addEventListener("pointerup", this.handleMouseUp);
+		window.addEventListener("pointercancel", this.handleMouseUp);
 	}
 
 	private deactivate(): void {
-		window.removeEventListener("mousemove", this.handleMouseMove);
-		window.removeEventListener("mouseup", this.handleMouseUp);
+		window.removeEventListener("pointermove", this.handleMouseMove);
+		window.removeEventListener("pointerup", this.handleMouseUp);
+		window.removeEventListener("pointercancel", this.handleMouseUp);
 	}
 
 	/**

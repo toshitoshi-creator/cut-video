@@ -5,7 +5,7 @@ import type {
 	TranscriptionModelId,
 } from "@/transcription/types";
 import {
-	DEFAULT_TRANSCRIPTION_MODEL,
+	getDefaultTranscriptionModel,
 	TRANSCRIPTION_MODELS,
 } from "@/transcription/models";
 import type { WorkerMessage, WorkerResponse } from "./worker";
@@ -21,7 +21,7 @@ class TranscriptionService {
 	async transcribe({
 		audioData,
 		language = "auto",
-		modelId = DEFAULT_TRANSCRIPTION_MODEL,
+		modelId = getDefaultTranscriptionModel(),
 		onProgress,
 	}: {
 		audioData: Float32Array;

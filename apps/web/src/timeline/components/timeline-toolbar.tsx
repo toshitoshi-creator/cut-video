@@ -255,7 +255,7 @@ function SceneSelector() {
 	return (
 		<div>
 			<SplitButton className="border-foreground/10 border">
-				<SplitButtonLeft>{currentScene?.name || t("No Scene")}</SplitButtonLeft>
+				<SplitButtonLeft>{currentScene?.name ? t(currentScene.name) : t("No Scene")}</SplitButtonLeft>
 				<SplitButtonSeparator />
 				<ScenesView>
 					<SplitButtonRight onClick={() => {}}>

@@ -144,11 +144,13 @@ function ColorPickerContent({
 		};
 
 		if (isDragging) {
-			document.addEventListener("mousemove", handleMouseMove);
-			document.addEventListener("mouseup", handleMouseUp);
+			document.addEventListener("pointermove", handleMouseMove);
+			document.addEventListener("pointerup", handleMouseUp);
+			document.addEventListener("pointercancel", handleMouseUp);
 			return () => {
-				document.removeEventListener("mousemove", handleMouseMove);
-				document.removeEventListener("mouseup", handleMouseUp);
+				document.removeEventListener("pointermove", handleMouseMove);
+				document.removeEventListener("pointerup", handleMouseUp);
+				document.removeEventListener("pointercancel", handleMouseUp);
 			};
 		}
 	}, [isDragging, displayHue, s, v, alpha, rgbValue, onChange, onChangeEnd]);
@@ -321,10 +323,10 @@ function ColorPickerContent({
 			<div className="px-2 flex flex-col gap-3">
 				<button
 					ref={saturationRef}
-					className="relative h-44 aspect-square w-full appearance-none border-0 bg-transparent p-0"
+					className="relative h-44 aspect-square w-full appearance-none border-0 bg-transparent p-0 touch-none"
 					style={saturationStyle}
 					type="button"
-					onMouseDown={handleSaturationMouseDown}
+					onPointerDown={handleSaturationMouseDown}
 				>
 					<ColorCircle
 						size="sm"
@@ -335,10 +337,10 @@ function ColorPickerContent({
 
 				<button
 					ref={hueRef}
-					className="relative h-4 w-full rounded-lg appearance-none border-0 bg-transparent p-0"
+					className="relative h-4 w-full rounded-lg appearance-none border-0 bg-transparent p-0 touch-none"
 					style={hueStyle}
 					type="button"
-					onMouseDown={handleHueMouseDown}
+					onPointerDown={handleHueMouseDown}
 				>
 					<ColorCircle
 						size="md"
@@ -351,9 +353,9 @@ function ColorPickerContent({
 
 				<button
 					ref={opacityRef}
-					className="relative h-4 w-full overflow-hidden rounded-lg appearance-none border-0 p-0"
+					className="relative h-4 w-full overflow-hidden rounded-lg appearance-none border-0 p-0 touch-none"
 					type="button"
-					onMouseDown={handleOpacityMouseDown}
+					onPointerDown={handleOpacityMouseDown}
 				>
 					<div className="absolute inset-0 dark:invert" style={CHECKERBOARD_STYLE} />
 					<div

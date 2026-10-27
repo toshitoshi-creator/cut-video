@@ -243,13 +243,15 @@ export class ResizeController {
 	}
 
 	private activate(): void {
-		document.addEventListener("mousemove", this.handleMouseMove);
-		document.addEventListener("mouseup", this.handleMouseUp);
+		document.addEventListener("pointermove", this.handleMouseMove);
+		document.addEventListener("pointerup", this.handleMouseUp);
+		document.addEventListener("pointercancel", this.handleMouseUp);
 	}
 
 	private deactivate(): void {
-		document.removeEventListener("mousemove", this.handleMouseMove);
-		document.removeEventListener("mouseup", this.handleMouseUp);
+		document.removeEventListener("pointermove", this.handleMouseMove);
+		document.removeEventListener("pointerup", this.handleMouseUp);
+		document.removeEventListener("pointercancel", this.handleMouseUp);
 	}
 
 	private notify(): void {

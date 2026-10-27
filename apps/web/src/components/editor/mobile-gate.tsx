@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { useRouter } from "next/navigation";
+import { isTabletDevice } from "@/utils/platform";
 import { useTranslation } from "@/i18n";
 
 const STORAGE_KEY = "mobile-acknowledged";
@@ -20,7 +21,7 @@ export function MobileGate({ children }: MobileGateProps) {
 	const { t } = useTranslation();
 
 	useEffect(() => {
-		const isMobile = window.innerWidth < 1024;
+		const isMobile = window.innerWidth < 1024 && !isTabletDevice();
 		const acknowledged = localStorage.getItem(STORAGE_KEY) === "true";
 		setShow(isMobile && !acknowledged);
 	}, []);

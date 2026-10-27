@@ -2,6 +2,7 @@ import type {
 	TranscriptionModel,
 	TranscriptionModelId,
 } from "./types";
+import { isAppleTouchDevice } from "@/utils/platform";
 
 export const TRANSCRIPTION_MODELS: TranscriptionModel[] = [
 	{
@@ -32,3 +33,9 @@ export const TRANSCRIPTION_MODELS: TranscriptionModel[] = [
 
 export const DEFAULT_TRANSCRIPTION_MODEL: TranscriptionModelId =
 	"whisper-small";
+
+// Safari on iPad/iPhone kills tabs that use too much memory, so touch devices
+// get the smallest model.
+export function getDefaultTranscriptionModel(): TranscriptionModelId {
+	return isAppleTouchDevice() ? "whisper-tiny" : DEFAULT_TRANSCRIPTION_MODEL;
+}
