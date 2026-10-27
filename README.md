@@ -1,3 +1,5 @@
+> **日本語版について**: このリポジトリは OpenCut classic を日本語化し、iPad のタッチ操作に対応させたものです。iPad で使う手順は [docs/ipad-ja.md](docs/ipad-ja.md) を見てください。
+
 # OpenCut (Legacy)
 
 This is the original OpenCut codebase. It's archived and no longer maintained.
