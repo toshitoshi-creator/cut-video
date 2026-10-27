@@ -10,6 +10,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useTranslation } from "@/i18n";
 
 export function DeleteProjectDialog({
 	isOpen,
@@ -25,6 +26,7 @@ export function DeleteProjectDialog({
 	const count = projectNames.length;
 	const isSingle = count === 1;
 	const singleName = isSingle ? projectNames[0] : null;
+	const { t } = useTranslation();
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -38,29 +40,34 @@ export function DeleteProjectDialog({
 					<DialogTitle>
 						{singleName ? (
 							<>
-								{"Delete '"}
+								{t("Delete '")}
 								<span className="inline-block max-w-[300px] truncate align-bottom">
 									{singleName}
 								</span>
-								{"'?"}
+								{t("'?")}
 							</>
 						) : (
-							`Delete ${count} projects?`
+							t("Delete {count} projects?", { count })
 						)}
 					</DialogTitle>
 				</DialogHeader>
 				<DialogBody>
 					<Alert variant="destructive">
-						<AlertTitle>Warning</AlertTitle>
+						<AlertTitle>{t("Warning")}</AlertTitle>
 						<AlertDescription>
-							This will permanently delete{" "}
-							{singleName ? `"${singleName}"` : `${count} projects`} and all
-							associated files.
+							{singleName
+								? t('This will permanently delete "{name}" and all associated files.', {
+										name: singleName,
+									})
+								: t(
+										"This will permanently delete {count} projects and all associated files.",
+										{ count },
+									)}
 						</AlertDescription>
 					</Alert>
 					<div className="flex flex-col gap-3">
 						<Label className="text-xs font-semibold text-slate-500">
-							Type "DELETE" to confirm
+							{t('Type "DELETE" to confirm')}
 						</Label>
 						<Input
 							type="text"
@@ -72,10 +79,10 @@ export function DeleteProjectDialog({
 				</DialogBody>
 				<DialogFooter>
 					<Button variant="outline" onClick={() => onOpenChange(false)}>
-						Cancel
+						{t("Cancel")}
 					</Button>
 					<Button variant="destructive" onClick={onConfirm}>
-						Delete project
+						{t("Delete project")}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

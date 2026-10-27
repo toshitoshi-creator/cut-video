@@ -24,6 +24,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { MinusSignIcon, PlusSignIcon } from "@hugeicons/core-free-icons";
 import { cn } from "@/utils/ui";
 import type { MediaTime } from "@/wasm";
+import { useTranslation } from "@/i18n";
 
 registerDefaultGraphics();
 
@@ -36,6 +37,7 @@ export function GraphicTab({
 	element: GraphicElement;
 	trackId: string;
 }) {
+	const { t } = useTranslation();
 	const definition = graphicsRegistry.get(element.definitionId);
 	const { localTime, isPlayheadWithinElementRange } = useElementPlayhead({
 		startTime: element.startTime,
@@ -60,7 +62,7 @@ export function GraphicTab({
 		<div className="flex flex-col">
 			<Section collapsible sectionKey={`${element.id}:graphic`}>
 				<SectionHeader>
-					<SectionTitle>{definition.name}</SectionTitle>
+					<SectionTitle>{t(definition.name)}</SectionTitle>
 				</SectionHeader>
 				<SectionContent>
 					<SectionFields>
@@ -90,6 +92,7 @@ function StrokeSection({
 	element: GraphicElement;
 	trackId: string;
 }) {
+	const { t } = useTranslation();
 	const editor = useEditor();
 	const definition = graphicsRegistry.get(element.definitionId);
 	const { localTime, isPlayheadWithinElementRange } = useElementPlayhead({
@@ -166,7 +169,7 @@ function StrokeSection({
 					</Button>
 				}
 			>
-				<SectionTitle>Stroke</SectionTitle>
+				<SectionTitle>{t("Stroke")}</SectionTitle>
 			</SectionHeader>
 			<SectionContent
 				className={cn(!isStrokeEnabled && "pointer-events-none opacity-50")}

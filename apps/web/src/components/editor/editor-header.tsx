@@ -26,6 +26,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ShortcutsDialog } from "@/actions/components/shortcuts-dialog";
 import Image from "next/image";
 import { cn } from "@/utils/ui";
+import { LanguageToggle } from "@/i18n/language-toggle";
+import { useTranslation } from "@/i18n";
 
 export function EditorHeader() {
 	return (
@@ -37,6 +39,7 @@ export function EditorHeader() {
 			<nav className="flex items-center gap-2">
 				<FeedbackPopover />
 				<ExportButton />
+				<LanguageToggle />
 				<ThemeToggle />
 			</nav>
 		</header>
@@ -51,6 +54,8 @@ function ProjectDropdown() {
 	const router = useRouter();
 	const editor = useEditor();
 	const activeProject = useEditor((e) => e.project.getActive());
+
+	const { t } = useTranslation();
 
 	const handleExit = async () => {
 		if (isExiting) return;
@@ -79,9 +84,9 @@ function ProjectDropdown() {
 					name: newName.trim(),
 				});
 			} catch (error) {
-				toast.error("Failed to rename project", {
+				toast.error(t("Failed to rename project"), {
 					description:
-						error instanceof Error ? error.message : "Please try again",
+						error instanceof Error ? error.message : t("Please try again"),
 				});
 			} finally {
 				setOpenDialog(null);
@@ -97,9 +102,9 @@ function ProjectDropdown() {
 				});
 				router.push("/projects");
 			} catch (error) {
-				toast.error("Failed to delete project", {
+				toast.error(t("Failed to delete project"), {
 					description:
-						error instanceof Error ? error.message : "Please try again",
+						error instanceof Error ? error.message : t("Please try again"),
 				});
 			} finally {
 				setOpenDialog(null);
@@ -114,7 +119,7 @@ function ProjectDropdown() {
 					<Button variant="ghost" size="icon" className="p-1 rounded-sm size-8">
 						<Image
 							src={DEFAULT_LOGO_URL}
-							alt="Project thumbnail"
+							alt={t("Project thumbnail")}
 							width={32}
 							height={32}
 							className="invert dark:invert-0 size-5"
@@ -127,14 +132,14 @@ function ProjectDropdown() {
 						disabled={isExiting}
 						icon={<HugeiconsIcon icon={Logout05Icon} />}
 					>
-						Exit project
+						{t("Exit project")}
 					</DropdownMenuItem>
 
 					<DropdownMenuItem
 						onClick={() => setOpenDialog("shortcuts")}
 						icon={<HugeiconsIcon icon={CommandIcon} />}
 					>
-						Shortcuts
+						{t("Shortcuts")}
 					</DropdownMenuItem>
 
 					<DropdownMenuSeparator />
@@ -176,6 +181,7 @@ function EditableProjectName() {
 	const [isEditing, setIsEditing] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const originalNameRef = useRef("");
+	const { t } = useTranslation();
 
 	const projectName = activeProject?.metadata.name || "";
 
@@ -206,9 +212,9 @@ function EditableProjectName() {
 					name: newName,
 				});
 			} catch (error) {
-				toast.error("Failed to rename project", {
+				toast.error(t("Failed to rename project"), {
 					description:
-						error instanceof Error ? error.message : "Please try again",
+						error instanceof Error ? error.message : t("Please try again"),
 				});
 			}
 		}

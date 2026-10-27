@@ -33,6 +33,7 @@ import {
 	subMediaTime,
 	ZERO_MEDIA_TIME,
 } from "@/wasm";
+import { useTranslation } from "@/i18n";
 
 const MIN_BOOKMARK_WIDTH_PX = 2;
 const BOOKMARK_MARKER_WIDTH_PX = 12;
@@ -79,6 +80,7 @@ export function TimelineBookmarksRow({
 	handleRulerTrackingMouseDown,
 	handleRulerMouseDown,
 }: TimelineBookmarksRowProps) {
+	const { t } = useTranslation();
 	const bookmarks = useEditor((e) => e.scenes.getActiveScene().bookmarks);
 
 	return (
@@ -92,7 +94,7 @@ export function TimelineBookmarksRow({
 					height: TIMELINE_BOOKMARK_ROW_HEIGHT_PX,
 					width: `${dynamicTimelineWidth}px`,
 				}}
-				aria-label="Timeline ruler"
+				aria-label={t("Timeline ruler")}
 				type="button"
 				onWheel={handleWheel}
 				onClick={(event) => {
@@ -133,6 +135,7 @@ function TimelineBookmark({
 		bookmark: Bookmark;
 	}) => void;
 }) {
+	const { t } = useTranslation();
 	const editor = useEditor();
 	const duration = editor.timeline.getTotalDuration();
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -189,7 +192,12 @@ function TimelineBookmark({
 						left: `${bookmarkLeft}px`,
 						width: `${bookmarkWidth}px`,
 					}}
-					aria-label={`Bookmark at ${formatNumberForDisplay({ value: mediaTimeToSeconds({ time }), fractionDigits: 1 })}s`}
+					aria-label={t("Bookmark at {seconds}s", {
+						seconds: formatNumberForDisplay({
+							value: mediaTimeToSeconds({ time }),
+							fractionDigits: 1,
+						}),
+					})}
 					type="button"
 					onMouseDown={handleMouseDown}
 					onClick={handleClick}
@@ -297,6 +305,7 @@ function BookmarkPopoverContent({
 	timelineDuration: MediaTime;
 	onPopoverClose: () => void;
 }) {
+	const { t } = useTranslation();
 	const editor = useEditor();
 	const [draftColorHex, setDraftColorHex] = useState(
 		(bookmark.color ?? DEFAULT_TIMELINE_BOOKMARK_COLOR)
@@ -349,9 +358,9 @@ function BookmarkPopoverContent({
 	return (
 		<>
 			<div className="flex flex-col gap-2">
-				<Label className="text-xs">Note</Label>
+				<Label className="text-xs">{t("Note")}</Label>
 				<Input
-					placeholder="Add a note..."
+					placeholder={t("Add a note...")}
 					value={bookmark.note ?? ""}
 					onChange={(event) => handleUpdate({ note: event.target.value })}
 					className="h-8 text-sm"
@@ -378,7 +387,7 @@ function BookmarkPopoverContent({
 								type="button"
 								variant="text"
 								size="text"
-								aria-label="Reset to default color"
+								aria-label={t("Reset to default color")}
 								className="absolute top-1/2 right-1 -translate-y-1/2 mr-1"
 								onClick={() =>
 									editor.scenes.updateBookmark({
@@ -432,10 +441,10 @@ function BookmarkPopoverContent({
 						handleRemove();
 					}
 				}}
-				aria-label="delete bookmark"
+				aria-label={t("Delete bookmark")}
 			>
 				<HugeiconsIcon icon={Delete02Icon} className="!size-3.5" />
-				Delete
+				{t("Delete")}
 			</Button>
 		</>
 	);

@@ -24,6 +24,7 @@ import {
 import { usePropertyDraft } from "../hooks/use-property-draft";
 import { KeyframeToggle } from "./keyframe-toggle";
 import { Textarea } from "@/components/ui/textarea";
+import { useTranslation } from "@/i18n";
 
 export function PropertyParamField({
 	param,
@@ -42,15 +43,16 @@ export function PropertyParamField({
 		onToggle: () => void;
 	};
 }) {
+	const { t } = useTranslation();
 	return (
 		<SectionField
-			label={param.label}
+			label={t(param.label)}
 			beforeLabel={
 				keyframe && param.keyframable !== false ? (
 					<KeyframeToggle
 						isActive={keyframe.isActive}
 						isDisabled={keyframe.isDisabled}
-						title={`Toggle ${param.label.toLowerCase()} keyframe`}
+						title={t("Toggle {label} keyframe", { label: t(param.label) })}
 						onToggle={keyframe.onToggle}
 					/>
 				) : undefined
@@ -77,6 +79,7 @@ function ParamInput({
 	onPreview: (value: ParamValue) => void;
 	onCommit: () => void;
 }) {
+	const { t } = useTranslation();
 	if (param.type === "number") {
 		return (
 			<NumberParamField
@@ -115,7 +118,7 @@ function ParamInput({
 				<SelectContent>
 					{param.options.map((option) => (
 						<SelectItem key={option.value} value={option.value}>
-							{option.label}
+							{t(option.label)}
 						</SelectItem>
 					))}
 				</SelectContent>

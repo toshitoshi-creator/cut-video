@@ -21,6 +21,7 @@ import {
 } from "./easing-presets";
 import { removePreset, savePreset, useCustomPresets } from "./custom-presets-store";
 import { BezierGraph, BEZIER_GRAPH_MIN_HEIGHT } from "./bezier-graph";
+import { useTranslation } from "@/i18n";
 
 const COLLAPSED_MAX = 6;
 const THUMB_SEGMENTS = 24;
@@ -58,6 +59,7 @@ export function GraphEditorPopover({
 	onCommitValue?: (value: NormalizedCubicBezier) => void;
 	onCancelPreview?: () => void;
 }) {
+	const { t } = useTranslation();
 	const [isExpanded, setIsExpanded] = useState(false);
 	const custom = useCustomPresets();
 	const allPresets = [...BUILTIN_PRESETS, ...custom];
@@ -103,7 +105,7 @@ export function GraphEditorPopover({
 											: "text-muted-foreground hover:text-foreground",
 									)}
 								>
-									{component.label}
+									{t(component.label)}
 								</button>
 							))}
 						</div>
@@ -126,10 +128,10 @@ export function GraphEditorPopover({
 				<Tabs variant="underline" defaultValue="presets" className="flex flex-col gap-2">
 					<TabsList className="px-3">
 						<TabsTrigger value="presets" className="text-xs">
-							Presets
+							{t("Presets")}
 						</TabsTrigger>
 						<TabsTrigger value="saved" className="text-xs">
-							Saved
+							{t("Saved")}
 						</TabsTrigger>
 					</TabsList>
 					<TabsContent value="presets" className="px-3 pb-0">
@@ -253,6 +255,7 @@ function PresetItem({
 	onDelete?: () => void;
 	disabled?: boolean;
 }) {
+	const { t } = useTranslation();
 	return (
 		<button
 			type="button"
@@ -280,7 +283,7 @@ function PresetItem({
 					isActive ? "text-primary" : "text-muted-foreground",
 				)}
 			>
-				{preset.label}
+				{t(preset.label)}
 			</span>
 			{onDelete && (
 				<Button
@@ -308,6 +311,7 @@ function toThumbY({ value }: { value: number }) {
 }
 
 function CurveThumb({ value }: { value: NormalizedCubicBezier }) {
+	const { t } = useTranslation();
 	const points: string[] = [];
 	for (let i = 0; i <= THUMB_SEGMENTS; i++) {
 		const progress = i / THUMB_SEGMENTS;
@@ -321,7 +325,7 @@ function CurveThumb({ value }: { value: NormalizedCubicBezier }) {
 			height={THUMB_HEIGHT}
 			viewBox={`0 0 ${THUMB_WIDTH} ${THUMB_HEIGHT}`}
 		>
-			<title>Curve preset preview</title>
+			<title>{t("Curve preset preview")}</title>
 			<path
 				d={`M${points.join("L")}`}
 				fill="none"

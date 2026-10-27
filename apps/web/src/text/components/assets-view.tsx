@@ -4,8 +4,10 @@ import { useEditor } from "@/editor/use-editor";
 import { DEFAULTS } from "@/timeline/defaults";
 import { buildTextElement } from "@/timeline/element-utils";
 import type { MediaTime } from "@/wasm";
+import { useTranslation } from "@/i18n";
 
 export function TextView() {
+	const { t } = useTranslation();
 	const editor = useEditor();
 
 	const handleAddToTimeline = ({ currentTime }: { currentTime: MediaTime }) => {
@@ -24,19 +26,19 @@ export function TextView() {
 	};
 
 	return (
-		<PanelView title="Text">
+		<PanelView title={t("Text")}>
 			<DraggableItem
-				name="Default text"
+				name={t("Default text")}
 				preview={
 					<div className="bg-accent flex size-full items-center justify-center rounded">
-						<span className="text-xs select-none">Default text</span>
+						<span className="text-xs select-none">{t("Default text")}</span>
 					</div>
 				}
 				dragData={{
 					id: "temp-text-id",
 					type: DEFAULTS.text.element.type,
 					name: DEFAULTS.text.element.name,
-					content: "Default text",
+					content: t("Default text"),
 				}}
 				aspectRatio={1}
 				onAddToTimeline={handleAddToTimeline}

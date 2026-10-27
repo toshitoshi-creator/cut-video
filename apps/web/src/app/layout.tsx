@@ -8,6 +8,8 @@ import { baseMetaData } from "./metadata";
 import { BotIdClient } from "botid/client";
 import { webEnv } from "@/env/web";
 import { Inter } from "next/font/google";
+import { LocaleHydrator } from "@/i18n/locale-hydrator";
+import { DEFAULT_LOCALE } from "@/i18n/store";
 
 const siteFont = Inter({ subsets: ["latin"] });
 
@@ -26,7 +28,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang={DEFAULT_LOCALE} suppressHydrationWarning>
 			<head>
 				<BotIdClient protect={protectedRoutes} />
 				{process.env.NODE_ENV === "development" && (
@@ -46,6 +48,7 @@ export default function RootLayout({
 					disableTransitionOnChange={true}
 				>
 					<TooltipProvider>
+						<LocaleHydrator />
 						<Toaster />
 						<Script
 							src="https://cdn.databuddy.cc/databuddy.js"

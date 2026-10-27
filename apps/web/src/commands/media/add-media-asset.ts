@@ -8,6 +8,7 @@ import type { FrameRate } from "opencut-wasm";
 import { hasMediaId } from "@/timeline/element-utils";
 import { frameRatesEqual, getHighestImportedVideoFps } from "@/fps/utils";
 import { UpdateProjectSettingsCommand } from "@/commands/project";
+import { t } from "@/i18n";
 
 export class AddMediaAssetCommand extends Command {
 	private assetId: string;
@@ -88,7 +89,7 @@ export class AddMediaAssetCommand extends Command {
 				this.restoreProjectFpsAfterFailedSave({ editor });
 
 				if (storageService.isQuotaExceededError({ error })) {
-					toast.error("Not enough browser storage", {
+					toast.error(t("Not enough browser storage"), {
 						description: error instanceof Error ? error.message : undefined,
 					});
 				}

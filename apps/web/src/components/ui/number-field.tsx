@@ -7,6 +7,7 @@ import { useFocusLock } from "@/hooks/use-focus-lock";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowTurnBackwardIcon } from "@hugeicons/core-free-icons";
+import { useTranslation } from "@/i18n";
 
 const SUFFIX_GAP_PX = 6;
 
@@ -134,6 +135,7 @@ function NumberField({
 	ref,
 	...props
 }: NumberFieldProps & { ref?: React.Ref<HTMLInputElement> }) {
+	const { t } = useTranslation();
 	const iconRef = useRef<HTMLButtonElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const ghostRef = useRef<HTMLSpanElement>(null);
@@ -256,7 +258,7 @@ function NumberField({
 					<button
 						ref={iconRef}
 						type="button"
-						aria-label="Drag to adjust value"
+						aria-label={t("Drag to adjust value")}
 						disabled={disabled}
 						className="text-muted-foreground [&_svg]:size-3.5! shrink-0 select-none pl-2.5 text-sm leading-none cursor-ew-resize"
 						onMouseDown={(event) => event.preventDefault()}
@@ -304,7 +306,7 @@ function NumberField({
 					<Button
 						variant="text"
 						size="text"
-						aria-label="Reset to default"
+						aria-label={t("Reset to default")}
 						onClick={onReset}
 					>
 						<HugeiconsIcon icon={ArrowTurnBackwardIcon} className="size-3.5!" />

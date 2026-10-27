@@ -6,6 +6,7 @@ import { generateUUID } from "@/utils/id";
 import { videoCache } from "@/services/video-cache/service";
 import { waveformCache } from "@/services/waveform-cache/service";
 import { BatchCommand, RemoveMediaAssetCommand } from "@/commands";
+import { t } from "@/i18n";
 
 export class MediaManager {
 	private assets: MediaAsset[] = [];
@@ -41,7 +42,7 @@ export class MediaManager {
 			this.notify();
 
 			if (storageService.isQuotaExceededError({ error })) {
-				toast.error("Not enough browser storage", {
+				toast.error(t("Not enough browser storage"), {
 					description: error instanceof Error ? error.message : undefined,
 				});
 			}

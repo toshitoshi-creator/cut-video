@@ -6,6 +6,7 @@ import type { MediaAsset } from "@/media/types";
 import { readVideoFile } from "./mediabunny";
 import type { VideoFileData } from "./mediabunny";
 import { renderThumbnailDataUrl } from "./thumbnail";
+import { t } from "@/i18n";
 
 export interface ProcessedMediaAsset extends Omit<MediaAsset, "id"> {}
 
@@ -14,11 +15,17 @@ const getUnsupportedVideoDescription = ({
 }: {
 	codec: VideoFileData["codec"];
 }): string => {
-	const codecLabel = codec ? codec.toUpperCase() : "this video codec";
+	const codecLabel = codec ? codec.toUpperCase() : t("this video codec");
 
 	return codec === "hevc"
-		? `${codecLabel} cannot be decoded in this browser, so this clip may not preview correctly. Convert it to H.264 MP4 or try importing it in Safari.`
-		: `${codecLabel} cannot be decoded in this browser, so this clip may not preview correctly. Convert it to H.264 MP4 and reimport it.`;
+		? t(
+				"{codec} cannot be decoded in this browser, so this clip may not preview correctly. Convert it to H.264 MP4 or try importing it in Safari.",
+				{ codec: codecLabel },
+			)
+		: t(
+				"{codec} cannot be decoded in this browser, so this clip may not preview correctly. Convert it to H.264 MP4 and reimport it.",
+				{ codec: codecLabel },
+			);
 };
 
 const getStorageLimitDescription = ({
@@ -31,12 +38,16 @@ const getStorageLimitDescription = ({
 	const fileSizeLabel = formatStorageBytes({ bytes: fileSize });
 
 	if (availableBytes === null) {
-		return `File size is ${fileSizeLabel}.`;
+		return t("File size is {size}.", { size: fileSizeLabel });
 	}
 
-	return `File size is ${fileSizeLabel}, but only ${formatStorageBytes({
-		bytes: availableBytes,
-	})} is safely available in browser storage.`;
+	return t(
+		"File size is {size}, but only {available} is safely available in browser storage.",
+		{
+			size: fileSizeLabel,
+			available: formatStorageBytes({ bytes: availableBytes }),
+		},
+	);
 };
 
 async function generateImageThumbnail({
@@ -99,7 +110,7 @@ export async function processMediaAssets({
 		const fileType = getMediaTypeFromFile({ file });
 
 		if (!fileType) {
-			toast.error(`Unsupported file type: ${file.name}`);
+			toast.error(t("Unsupported file type: {name}", { name: file.name }));
 			continue;
 		}
 
@@ -108,7 +119,7 @@ export async function processMediaAssets({
 		});
 
 		if (!storageCheck.canStore) {
-			toast.error(`Not enough browser storage for ${file.name}`, {
+			toast.error(t("Not enough browser storage for {name}", { name: file.name }), {
 				description: getStorageLimitDescription({
 					fileSize: file.size,
 					availableBytes: storageCheck.availableBytes,
@@ -144,7 +155,7 @@ export async function processMediaAssets({
 					thumbnailUrl = videoData.thumbnailUrl ?? undefined;
 
 					if (!videoData.canDecode) {
-						toast.error(`Can't preview ${file.name}`, {
+						toast.error(t("Can't preview {name}", { name: file.name }), {
 							description: getUnsupportedVideoDescription({
 								codec: videoData.codec,
 							}),
@@ -154,9 +165,9 @@ export async function processMediaAssets({
 					const message =
 						error instanceof Error
 							? error.message
-							: "Could not process video";
+							: t("Could not process video");
 
-					toast.error(`Couldn't process ${file.name}`, {
+					toast.error(t("Couldn't process {name}", { name: file.name }), {
 						description: message,
 					});
 				}
@@ -186,7 +197,7 @@ export async function processMediaAssets({
 			}
 		} catch (error) {
 			console.error("Error processing file:", file.name, error);
-			toast.error(`Failed to process ${file.name}`);
+			toast.error(t("Failed to process {name}", { name: file.name }));
 			URL.revokeObjectURL(url);
 		}
 	}

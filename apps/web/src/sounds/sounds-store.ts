@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { EditorCore } from "@/core";
 import { buildLibraryAudioElement } from "@/timeline/element-utils";
 import { mediaTimeFromSeconds } from "@/wasm";
+import { t } from "@/i18n";
 
 interface SoundsStore {
 	topSoundEffects: SoundEffect[];
@@ -154,7 +155,7 @@ export const useSoundsStore = create<SoundsStore>((set, get) => ({
 			const errorMessage =
 				error instanceof Error ? error.message : "Failed to save sound";
 			set({ savedSoundsError: errorMessage });
-			toast.error("Failed to save sound");
+			toast.error(t("Failed to save sound"));
 			console.error("Failed to save sound:", error);
 		}
 	},
@@ -170,7 +171,7 @@ export const useSoundsStore = create<SoundsStore>((set, get) => ({
 			const errorMessage =
 				error instanceof Error ? error.message : "Failed to remove sound";
 			set({ savedSoundsError: errorMessage });
-			toast.error("Failed to remove sound");
+			toast.error(t("Failed to remove sound"));
 			console.error("Failed to remove sound:", error);
 		}
 	},
@@ -201,7 +202,7 @@ export const useSoundsStore = create<SoundsStore>((set, get) => ({
 			const errorMessage =
 				error instanceof Error ? error.message : "Failed to clear saved sounds";
 			set({ savedSoundsError: errorMessage });
-			toast.error("Failed to clear saved sounds");
+			toast.error(t("Failed to clear saved sounds"));
 			console.error("Failed to clear saved sounds:", error);
 		}
 	},
@@ -209,7 +210,7 @@ export const useSoundsStore = create<SoundsStore>((set, get) => ({
 	addSoundToTimeline: async ({ sound }) => {
 		const audioUrl = sound.previewUrl;
 		if (!audioUrl) {
-			toast.error("Sound file not available");
+			toast.error(t("Sound file not available"));
 			return false;
 		}
 
@@ -243,7 +244,7 @@ export const useSoundsStore = create<SoundsStore>((set, get) => ({
 			toast.error(
 				error instanceof Error
 					? error.message
-					: "Failed to add sound to timeline",
+					: t("Failed to add sound to timeline"),
 				{ id: `sound-${sound.id}` },
 			);
 			return false;

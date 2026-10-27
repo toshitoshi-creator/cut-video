@@ -14,8 +14,10 @@ import { usePropertiesStore } from "./stores/properties-store";
 import { getPropertiesConfig } from "./registry";
 import { cn } from "@/utils/ui";
 import { EmptyView } from "./empty-view";
+import { useTranslation } from "@/i18n";
 
 export function PropertiesPanel() {
+	const { t } = useTranslation();
 	const editor = useEditor();
 	useEditor((e) => e.scenes.getActiveSceneOrNull());
 	useEditor((e) => e.media.getAssets());
@@ -54,10 +56,10 @@ export function PropertiesPanel() {
 	const visibleTabs = config.tabs;
 
 	const storedTabId = activeTabPerType[element.type];
-	const isStoredTabVisible = visibleTabs.some((t) => t.id === storedTabId);
+	const isStoredTabVisible = visibleTabs.some((tab) => tab.id === storedTabId);
 	const activeTabId = isStoredTabVisible ? storedTabId : config.defaultTab;
 	const activeTab =
-		visibleTabs.find((t) => t.id === activeTabId) ?? visibleTabs[0];
+		visibleTabs.find((tab) => tab.id === activeTabId) ?? visibleTabs[0];
 
 	if (!activeTab) return null;
 
@@ -77,7 +79,7 @@ export function PropertiesPanel() {
 											tabId: tab.id,
 										})
 									}
-									aria-label={tab.label}
+									aria-label={t(tab.label)}
 									className={cn(
 										"shrink-0",
 										"h-8 w-8",
@@ -87,7 +89,7 @@ export function PropertiesPanel() {
 									{tab.icon}
 								</Button>
 							</TooltipTrigger>
-							<TooltipContent side="right">{tab.label}</TooltipContent>
+							<TooltipContent side="right">{t(tab.label)}</TooltipContent>
 						</Tooltip>
 					))}
 				</div>

@@ -29,6 +29,7 @@ import { DEFAULTS } from "@/timeline/defaults";
 import { getElementFontFamilies } from "@/timeline/element-utils";
 import { getRaisedProjectFpsForImportedMedia } from "@/fps/utils";
 import type { MediaAsset } from "@/media/types";
+import { t } from "@/i18n";
 
 export interface MigrationState {
 	isMigrating: boolean;
@@ -120,7 +121,7 @@ export class ProjectManager {
 
 			return newProject.metadata.id;
 		} catch (error) {
-			toast.error("Failed to save new project");
+			toast.error(t("Failed to save new project"));
 			throw error;
 		}
 	}
@@ -325,8 +326,8 @@ export class ProjectManager {
 		try {
 			const result = await storageService.loadProject({ id });
 			if (!result) {
-				toast.error("Project not found", {
-					description: "Please try again",
+				toast.error(t("Project not found"), {
+					description: t("Please try again"),
 				});
 				return;
 			}
@@ -350,9 +351,9 @@ export class ProjectManager {
 			this.updateMetadata(updatedProject);
 		} catch (error) {
 			console.error("Failed to rename project:", error);
-			toast.error("Failed to rename project", {
+			toast.error(t("Failed to rename project"), {
 				description:
-					error instanceof Error ? error.message : "Please try again",
+					error instanceof Error ? error.message : t("Please try again"),
 			});
 		}
 	}
@@ -383,13 +384,13 @@ export class ProjectManager {
 			if (missingProjectIds.length > 0) {
 				toast.error(
 					missingProjectIds.length === 1
-						? "Project not found"
-						: "Projects not found",
+						? t("Project not found")
+						: t("Projects not found"),
 					{
 						description:
 							missingProjectIds.length === 1
-								? "Please try again"
-								: "Some projects could not be found",
+								? t("Please try again")
+								: t("Some projects could not be found"),
 					},
 				);
 				throw new Error(`Projects not found: ${missingProjectIds.join(", ")}`);
@@ -475,9 +476,9 @@ export class ProjectManager {
 			return duplicationPlans.map((plan) => plan.newProjectId);
 		} catch (error) {
 			console.error("Failed to duplicate projects:", error);
-			toast.error("Failed to duplicate projects", {
+			toast.error(t("Failed to duplicate projects"), {
 				description:
-					error instanceof Error ? error.message : "Please try again",
+					error instanceof Error ? error.message : t("Please try again"),
 			});
 			throw error;
 		}
